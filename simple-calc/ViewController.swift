@@ -8,6 +8,8 @@
 
 import UIKit
 
+    var history = ""
+
 class ViewController: UIViewController {
 
     var numberDisplayed: Double = 0
@@ -33,34 +35,58 @@ class ViewController: UIViewController {
     
     @IBAction func basicActions(_ sender: UIButton) {
         if(label.text != "" && sender.tag != 11 && sender.tag != 16) {
+            history += label.text!
             firstNumber = Double(label.text!)!
             operation = sender.tag
             mathReady = true
         }
         else if (sender.tag == 16) {
             if(operation == 12) {
+                history += "/"
+                history += label.text!
                 label.text = String(firstNumber / numberDisplayed)
+                history += "="
+                history += label.text!
             }
             else if(operation == 13) {
+                history += "*"
+                history += label.text!
                 label.text = String(firstNumber * numberDisplayed)
+                history += "="
+                history += label.text!
             }
             else if(operation == 14) {
+                history += "-"
+                history += label.text!
                 label.text = String(firstNumber - numberDisplayed)
+                history += "="
+                history += label.text!
             }
             else if(operation == 15) {
+                history += "+"
+                history += label.text!
                 label.text = String(firstNumber + numberDisplayed)
+                history += "="
+                history += label.text!
             } else if(operation == 17) {
                 numList.append(numberDisplayed)
+                history += String(numberDisplayed)
+                history += "count " + "="
                 label.text = String(numList.count)
+                history += label.text!
             } else if(operation == 18) {
+                history += String(numberDisplayed) + "avg" + " = "
                 numList.append(numberDisplayed)
                 total += numberDisplayed
                 label.text = String(total/Double(numList.count))
+                history += label.text!
             } else if(operation == 19) {
                 label.text = String(factorial(n: Int(numberDisplayed)))
             } else if(operation == 20) {
                 label.text = String(firstNumber.truncatingRemainder(dividingBy: numberDisplayed))
+                history += String(firstNumber) + "%" + String(numberDisplayed) + "=" + label.text!
             }
+            history += "\n"
         }
         else if(sender.tag == 11){
             label.text = ""
@@ -76,7 +102,9 @@ class ViewController: UIViewController {
         if(label.text != "") {
             if(sender.tag == 19) {
                 label.text = String(factorial(n: Int(numberDisplayed)))
+                history += String(numberDisplayed) + "! = " + label.text!
             } else if sender.tag == 18 || sender.tag == 17 {
+                history += String(numberDisplayed) + " "
                 numList.append(numberDisplayed)
                 total += numberDisplayed
                 mathReady = true
@@ -89,6 +117,13 @@ class ViewController: UIViewController {
         return n == 0 ? 1 : n * factorial(n: n - 1)
     }
     
+    @IBAction func History(_ sender: Any) {
+        performSegue(withIdentifier: "History", sender: self)
+    }
+    
+    @IBAction func Back(_ sender: Any) {
+        performSegue(withIdentifier: "Back", sender: self)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
